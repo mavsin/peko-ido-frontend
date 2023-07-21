@@ -1,7 +1,7 @@
 import { Link } from "@remix-run/react";
+import { Icon } from "@iconify/react";
 import Container from "./Container";
 import { SOCIAL_LINKS } from "~/utils/constants";
-import { Icon } from "@iconify/react";
 
 export default function Footer() {
   return (

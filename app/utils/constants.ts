@@ -1,4 +1,4 @@
-import { ISocialLink } from "./interfaces";
+import type { ISocialLink } from "./interfaces";
 
 export const SOCIAL_LINKS: Array<ISocialLink> = [
   {
