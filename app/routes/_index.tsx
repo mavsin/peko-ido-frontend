@@ -43,17 +43,17 @@ export default function Index() {
               </ButtonGroup>
             </div>
 
-            <div className="grid grid-cols-3 gap-8">
-              <div className="col-span-2 flex flex-col gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+              <div className="col-span-1 md:col-span-2 xl:col-span-2 flex flex-col gap-8">
                 {/* Logo and Sale */}
                 <div className="grid grid-cols-7 gap-8">
                   {/* Logo */}
-                  <div className="col-span-3 border-2 border-yellow-800 rounded-md flex flex-col justify-center items-center">
+                  <div className="col-span-3 border-2 border-yellow-800 rounded-md hidden md:flex flex-col justify-center items-center">
                     <img src="/assets/images/logo.png" alt="Logo" className="w-40" />
                   </div>
 
                   {/* Sale */}
-                  <div className="col-span-4 border-2 border-yellow-800 rounded-md">
+                  <div className="col-span-7 md:col-span-4 border-2 border-yellow-800 rounded-md">
                     {/* title */}
                     <div className="py-2 px-4 border-b-2 border-yellow-800">
                       <h2 className="text-yellow-800 uppercase text-lg">Sale</h2>
@@ -67,13 +67,17 @@ export default function Index() {
                             className="!border !border-yellow-800 rounded-lg"
                             endAdornment={<Button color="amber" className="text-base font-normal py-1 px-3 rounded-lg">Max</Button>}
                           />
-                          <Button color="amber" className="text-base">Buy</Button>
+                          <Button color="amber" className="text-base hidden md:block">Buy</Button>
                         </div>
 
-                        <div className="flex items-center gap-4">
-                          <span className="text-gray-500 text-sm">Balance:</span>
-                          <span className="text-gray-100 text-base uppercase font-bold">- - ETH</span>
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-4">
+                            <span className="text-gray-500 text-sm">Balance:</span>
+                            <span className="text-gray-100 text-base uppercase font-bold">- - ETH</span>
+                          </div>
+                          <Button color="amber" className="text-base block md:hidden py-2">Buy</Button>
                         </div>
+
                       </div>
 
                       {/* Sale ends in */}
@@ -94,8 +98,8 @@ export default function Index() {
                     <h2 className="text-yellow-800 text-lg">Total raised: <span className="uppercase">- - ETH (- - %)</span></h2>
                   </div>
                   {/* Content 1 */}
-                  <div className="p-4 border-b-2 border-yellow-800 grid grid-cols-7">
-                    <div className="col-span-3 flex flex-col gap-4">
+                  <div className="p-4 border-b-2 border-yellow-800 grid grid-cols-7 gap-4 md:gap-0">
+                    <div className="col-span-7 md:col-span-3 flex flex-col gap-4">
                       <div className="flex flex-col gap-2">
                         {/* Total purchased */}
                         <div className="flex items-center justify-between">
@@ -117,13 +121,13 @@ export default function Index() {
                       </div>
                     </div>
 
-                    <div className="col-span-4 flex flex-col justify-center items-center">
-                      <Button color="amber" className="text-sm normal-case">Claim ETH and PEKO</Button>
+                    <div className="col-span-7 md:col-span-4 flex flex-col justify-center items-center">
+                      <Button color="amber" className="text-base normal-case">Claim ETH and PEKO</Button>
                     </div>
                   </div>
 
                   {/* Content 2 */}
-                  <div className="p-4 grid grid-cols-2">
+                  <div className="p-4 grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-0">
                     <div className="flex flex-col gap-1">
                       <div className="flex items-center justify-between">
                         <span className="text-yellow-800 text-sm">Total bonus pool:</span>
@@ -144,14 +148,14 @@ export default function Index() {
                     </div>
 
                     <div className="flex flex-col justify-center items-center">
-                      <Button color="amber" className="text-sm normal-case">CLAIM</Button>
+                      <Button color="amber" className="text-base normal-case">CLAIM</Button>
                     </div>
                   </div>
                 </div>
               </div>
 
               {/* Sale Info */}
-              <div className="col-span-1 border-2 border-yellow-800 rounded-md">
+              <div className="col-span-1 md:col-span-2 xl:col-span-1 border-2 border-yellow-800 rounded-md">
                 {/* title */}
                 <div className="py-2 px-4 border-b-2 border-yellow-800">
                   <h2 className="text-yellow-800 text-lg">SALE INFO</h2>
