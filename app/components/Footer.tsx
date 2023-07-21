@@ -15,7 +15,7 @@ export default function Footer() {
           <div className="flex items-center gap-4">
             {SOCIAL_LINKS.map(socialLink => (
               <a key={socialLink.id} href={socialLink.href} target="_blank" rel="noreferrer">
-                <Icon icon={socialLink.icon} className="text-gray-100 text-3xl transition hover:scale-110" />
+                <Icon icon={socialLink.icon} className="text-gray-100 text-3xl transition hover:text-yellow-800" />
               </a>
             ))}
           </div>

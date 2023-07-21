@@ -10,8 +10,8 @@ import Input from "~/components/Input";
 
 export const meta: V2_MetaFunction = () => {
   return [
-    { title: "New Remix App" },
-    { name: "description", content: "Welcome to Remix!" },
+    { title: "Peko IDO" },
+    { name: "description", content: "" },
   ];
 };
 

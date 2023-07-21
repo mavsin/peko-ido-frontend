@@ -1,8 +1,22 @@
 import { Link } from "@remix-run/react";
-import Container from "./Container";
+import { useAccount, useDisconnect, useSwitchNetwork, useNetwork } from "wagmi"
 import { Button } from "@material-tailwind/react";
+import { useWeb3Modal } from "@web3modal/react"
+import Container from "./Container";
+
+//  ---------------------------------------------------------------------------------------------------
+
+const chainId = process.env.CHAIN_ID || ''
+
+//  ---------------------------------------------------------------------------------------------------
 
 export default function Navbar() {
+  const { open } = useWeb3Modal()
+  const { isConnected } = useAccount()
+  const { disconnect } = useDisconnect()
+  const { switchNetwork } = useSwitchNetwork()
+  const { chain } = useNetwork()
+
   return (
     <nav className="flex justify-center py-4 bg-black border-b border-gray-500">
       <Container>
@@ -11,7 +25,13 @@ export default function Navbar() {
             <img src="/assets/images/logo.png" alt="logo" className="w-8" />
           </Link>
 
-          <Button color="amber" className="normal-case text-sm">Connect Wallet</Button>
+          {isConnected ? chain?.id === Number(chainId) ? (
+            <Button color="amber" className="normal-case text-sm" onClick={() => disconnect?.()}>Disconnect</Button>
+          ) : (
+            <Button color="amber" className="normal-case text-sm" onClick={() => switchNetwork?.(Number(chainId))}>Switch Network</Button>
+          ) : (
+            <Button color="amber" className="normal-case text-sm" onClick={() => open()}>Connect Wallet</Button>
+          )}
         </div>
       </Container>
     </nav>
