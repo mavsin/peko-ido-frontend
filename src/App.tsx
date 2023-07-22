@@ -10,14 +10,6 @@ import { publicProvider } from "wagmi/providers/public";
 
 const projectId = import.meta.env.VITE_PROJECT_ID || ''
 
-// const wagmiConfig = createConfig({
-//   autoConnect: true,
-//   connectors: w3mConnectors({ projectId, chains }),
-//   publicClient: createPublicClient({
-//     chain: lineaTestnet,
-//     transport: http()
-//   })
-// })
 const { chains, publicClient, webSocketPublicClient } = configureChains([lineaTestnet], [publicProvider()])
 
 const wagmiConfig = createConfig({
