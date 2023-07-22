@@ -1,22 +1,30 @@
 import { EthereumClient, w3mConnectors } from "@web3modal/ethereum";
 import { Web3Modal } from "@web3modal/react";
-import { createPublicClient, http } from "viem";
-import { WagmiConfig, createConfig } from "wagmi";
+import { WagmiConfig, createConfig, configureChains } from "wagmi";
 import { lineaTestnet } from "wagmi/chains";
 import { BrowserRouter } from 'react-router-dom';
 import Routes from "./Routes";
+import { publicProvider } from "wagmi/providers/public";
 
 //  --------------------------------------------------------------------------------------
 
-const chains = [lineaTestnet]
 const projectId = import.meta.env.VITE_PROJECT_ID || ''
+
+// const wagmiConfig = createConfig({
+//   autoConnect: true,
+//   connectors: w3mConnectors({ projectId, chains }),
+//   publicClient: createPublicClient({
+//     chain: lineaTestnet,
+//     transport: http()
+//   })
+// })
+const { chains, publicClient, webSocketPublicClient } = configureChains([lineaTestnet], [publicProvider()])
+
 const wagmiConfig = createConfig({
   autoConnect: true,
   connectors: w3mConnectors({ projectId, chains }),
-  publicClient: createPublicClient({
-    chain: lineaTestnet,
-    transport: http()
-  })
+  publicClient,
+  webSocketPublicClient
 })
 const ethereumClient = new EthereumClient(wagmiConfig, chains)
 
