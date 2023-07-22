@@ -9,7 +9,6 @@ interface IProps {
   startAdornment?: ReactNode;
   endAdornment?: ReactNode;
   error?: boolean;
-  [key: string]: any;
 }
 
 /* --------------------------------------------------------------------------- */

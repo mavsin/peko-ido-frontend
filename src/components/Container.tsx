@@ -1,7 +1,8 @@
+import { ReactNode } from "react";
 
 interface IProps {
   className?: string;
-  children: any;
+  children: ReactNode | string | number;
 }
 
 export default function Container({ className = '', children }: IProps) {

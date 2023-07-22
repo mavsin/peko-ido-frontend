@@ -1,12 +1,12 @@
-import { Link } from "@remix-run/react";
 import { useAccount, useDisconnect, useSwitchNetwork, useNetwork } from "wagmi"
+import { Link } from 'react-router-dom'
 import { Button } from "@material-tailwind/react";
 import { useWeb3Modal } from "@web3modal/react"
-import Container from "./Container";
+import Container from "../../components/Container";
 
 //  ---------------------------------------------------------------------------------------------------
 
-const chainId = process.env.CHAIN_ID || ''
+const chainId = import.meta.env.VITE_CHAIN_ID || ''
 
 //  ---------------------------------------------------------------------------------------------------
 
