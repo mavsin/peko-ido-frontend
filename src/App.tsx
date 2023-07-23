@@ -5,6 +5,8 @@ import { lineaTestnet } from "wagmi/chains";
 import { BrowserRouter } from 'react-router-dom';
 import Routes from "./Routes";
 import { publicProvider } from "wagmi/providers/public";
+import { Suspense } from "react";
+import Loading from "./components/Loading";
 
 //  --------------------------------------------------------------------------------------
 
@@ -24,14 +26,14 @@ const ethereumClient = new EthereumClient(wagmiConfig, chains)
 
 function App() {
   return (
-    <>
+    <Suspense fallback={<Loading />}>
       <WagmiConfig config={wagmiConfig}>
         <BrowserRouter>
           <Routes />
         </BrowserRouter>
       </WagmiConfig>
       <Web3Modal projectId={projectId} ethereumClient={ethereumClient} />
-    </>
+    </Suspense>
 
   )
 }
