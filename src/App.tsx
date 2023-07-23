@@ -1,11 +1,11 @@
+import { Suspense } from "react";
 import { EthereumClient, w3mConnectors } from "@web3modal/ethereum";
 import { Web3Modal } from "@web3modal/react";
+import { BrowserRouter } from 'react-router-dom';
 import { WagmiConfig, createConfig, configureChains } from "wagmi";
 import { lineaTestnet } from "wagmi/chains";
-import { BrowserRouter } from 'react-router-dom';
-import Routes from "./Routes";
 import { publicProvider } from "wagmi/providers/public";
-import { Suspense } from "react";
+import Routes from "./Routes";
 import Loading from "./components/Loading";
 
 //  --------------------------------------------------------------------------------------

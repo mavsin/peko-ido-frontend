@@ -1,7 +1,33 @@
+import { useState, ChangeEvent, useMemo } from 'react'
 import { Button } from '@material-tailwind/react'
-import Input from "../../components/Input";
+import Input from "../../components/Input"
+import { REGEX_NUMBER_VALID } from '../../utils/constants'
 
 export default function SaleBoard() {
+  const [amount, setAmount] = useState<string>('0')
+
+  //  -----------------------------------------------------------------
+
+  const handleAmount = (e: ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+
+    if (value.match(REGEX_NUMBER_VALID)) {
+      setAmount(value);
+    }
+  }
+
+  //  -----------------------------------------------------------------
+
+  const amountInNumberType = useMemo<string>(() => {
+    if (amount[0] === '0') {
+      if (amount[1] !== '.')
+        return `${Number(amount)}`
+    }
+    return amount
+  }, [amount])
+
+  //  -----------------------------------------------------------------
+
   return (
     <div className="col-span-7 md:col-span-4 border-2 border-yellow-800 rounded-md">
       {/* title */}
@@ -15,6 +41,8 @@ export default function SaleBoard() {
             <span className="text-gray-500 text-sm">Amount:</span>
             <Input
               className="!border !border-yellow-800 rounded-lg"
+              onChange={handleAmount}
+              value={amountInNumberType}
               endAdornment={<Button color="amber" className="text-base font-normal py-1 px-3 rounded-lg">Max</Button>}
             />
             <Button color="amber" className="text-base hidden md:block">Buy</Button>

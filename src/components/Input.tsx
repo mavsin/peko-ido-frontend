@@ -1,8 +1,8 @@
-import type { ReactNode } from 'react';
+import type { ReactNode, InputHTMLAttributes } from 'react';
 
 /* --------------------------------------------------------------------------- */
 
-interface IProps {
+interface IProps extends InputHTMLAttributes<HTMLInputElement> {
   className?: string;
   children?: ReactNode | string;
   classNameOfInput?: string;

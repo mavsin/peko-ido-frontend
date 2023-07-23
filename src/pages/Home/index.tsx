@@ -8,7 +8,7 @@ import { TSaleMode } from "../../utils/types"
 const SaleBoard = lazy(() => import('./SaleBoard'))
 const Claim1 = lazy(() => import('./Claim1'))
 const Claim2 = lazy(() => import('./Claim2'))
-const SaleInfo = lazy(() => import('./SaleInfo'))
+const SaleInfoBoard = lazy(() => import('./SaleInfoBoard'))
 
 //  ------------------------------------------------------------------------------------------------------
 
@@ -62,7 +62,7 @@ export default function Home() {
           </div>
 
           {/* Sale Info */}
-          <SaleInfo saleMode={saleMode} />
+          <SaleInfoBoard saleMode={saleMode} />
         </div>
       </div>
     </Container>

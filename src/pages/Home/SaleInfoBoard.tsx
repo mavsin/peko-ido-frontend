@@ -12,7 +12,7 @@ interface IProps {
 
 //  ----------------------------------------------------------------------------------------------------------
 
-export default function SaleInfo({ saleMode }: IProps) {
+export default function SaleInfoBoard({ saleMode }: IProps) {
   const { data: startTimeInBigint } = useContractRead({
     address: IDO_CONTRACT_ADDRESS,
     abi: IDO_CONTRACT_ABI,
