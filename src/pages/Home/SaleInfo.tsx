@@ -1,10 +1,34 @@
+import { useMemo } from 'react';
+import { useContractRead } from "wagmi";
 import { TSaleMode } from "../../utils/types";
+import { IDO_CONTRACT_ABI, IDO_CONTRACT_ADDRESS } from "../../utils/constants";
+import { getVisibleDateTime } from '../../utils/functions';
+
+//  ----------------------------------------------------------------------------------------------------------
 
 interface IProps {
   saleMode: TSaleMode;
 }
 
+//  ----------------------------------------------------------------------------------------------------------
+
 export default function SaleInfo({ saleMode }: IProps) {
+  const { data: startTimeInBigint } = useContractRead({
+    address: IDO_CONTRACT_ADDRESS,
+    abi: IDO_CONTRACT_ABI,
+    functionName: 'startTime'
+  })
+  //  ------------------------------------------------------------------------
+
+  const startTime = useMemo<string>(() => {
+    if (startTimeInBigint) {
+      return getVisibleDateTime(new Date(Number(startTimeInBigint)))
+    }
+    return getVisibleDateTime(new Date())
+  }, [startTimeInBigint])
+
+  //  ------------------------------------------------------------------------
+
   return (
     <div className="col-span-1 md:col-span-2 xl:col-span-1 border-2 border-yellow-800 rounded-md">
       {/* title */}
@@ -15,7 +39,7 @@ export default function SaleInfo({ saleMode }: IProps) {
       <div className="p-4 flex flex-col gap-4">
         <div className="flex flex-col gap-1">
           <span className="text-gray-500 text-sm">Start Sale</span>
-          <span className="text-gray-100 text-base font-bold">UTC 2023-05-18 02:00:00</span>
+          <span className="text-gray-100 text-base font-bold">UTC {startTime}</span>
         </div>
         <div className="flex flex-col gap-1">
           <span className="text-gray-500 text-sm">End of Sale</span>

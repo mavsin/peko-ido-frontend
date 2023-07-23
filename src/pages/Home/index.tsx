@@ -1,7 +1,6 @@
 import { lazy, useState } from "react"
 import { Button } from '@material-tailwind/react'
 import Container from "../../components/Container"
-import SaleInfo from "./SaleInfo"
 import { TSaleMode } from "../../utils/types"
 
 //  ------------------------------------------------------------------------------------------------------
@@ -9,6 +8,7 @@ import { TSaleMode } from "../../utils/types"
 const SaleBoard = lazy(() => import('./SaleBoard'))
 const Claim1 = lazy(() => import('./Claim1'))
 const Claim2 = lazy(() => import('./Claim2'))
+const SaleInfo = lazy(() => import('./SaleInfo'))
 
 //  ------------------------------------------------------------------------------------------------------
 
