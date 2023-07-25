@@ -1,10 +1,37 @@
 import { useState, ChangeEvent, useMemo } from 'react'
 import { Button } from '@material-tailwind/react'
+import { useContractWrite, usePrepareContractWrite, useWaitForTransaction } from 'wagmi'
+import { toast } from 'react-toastify'
 import Input from "../../components/Input"
-import { REGEX_NUMBER_VALID } from '../../utils/constants'
+import { IDO_CONTRACT_ABI, IDO_CONTRACT_ADDRESS, REGEX_NUMBER_VALID } from '../../utils/constants'
 
 export default function SaleBoard() {
   const [amount, setAmount] = useState<string>('0')
+
+  //  -----------------------------------------------------------------
+
+  const { config: configOfBuyWithUSDT } = usePrepareContractWrite({
+    address: IDO_CONTRACT_ADDRESS,
+    abi: IDO_CONTRACT_ABI,
+    functionName: 'buyWithUSDT'
+  })
+  const { write: buyWithUSDT, data: dataOfBuyWithUSDT } = useContractWrite(configOfBuyWithUSDT)
+  const { isLoading: buyWithUSDTIsLoading } = useWaitForTransaction({
+    hash: dataOfBuyWithUSDT?.hash,
+    onSuccess: () => {
+      toast.success('Purchased.');
+    }
+  })
+
+  //  -----------------------------------------------------------------
+
+  const amountInNumberType = useMemo<string>(() => {
+    if (amount[0] === '0') {
+      if (amount[1] !== '.')
+        return `${Number(amount)}`
+    }
+    return amount
+  }, [amount])
 
   //  -----------------------------------------------------------------
 
@@ -16,15 +43,9 @@ export default function SaleBoard() {
     }
   }
 
-  //  -----------------------------------------------------------------
+  const handleBuy = () => {
 
-  const amountInNumberType = useMemo<string>(() => {
-    if (amount[0] === '0') {
-      if (amount[1] !== '.')
-        return `${Number(amount)}`
-    }
-    return amount
-  }, [amount])
+  }
 
   //  -----------------------------------------------------------------
 
@@ -45,7 +66,12 @@ export default function SaleBoard() {
               value={amountInNumberType}
               endAdornment={<Button color="amber" className="text-base font-normal py-1 px-3 rounded-lg">Max</Button>}
             />
-            <Button color="amber" className="text-base hidden md:block">Buy</Button>
+            <Button
+              color="amber"
+              className="text-base hidden md:block"
+              disabled={buyWithUSDTIsLoading || !buyWithUSDT}
+              onClick={() => handleBuy()}
+            >Buy</Button>
           </div>
 
           <div className="flex items-center justify-between">
