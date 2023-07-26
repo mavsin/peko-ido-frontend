@@ -3,8 +3,3 @@ export interface ISocialLink {
   icon: string;
   href: string;
 }
-
-export interface IReturnValueOfStartTime {
-  data?: bigint;
-  [key: string]: object | bigint | undefined;
-}
