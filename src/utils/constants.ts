@@ -890,3 +890,7 @@ export const USDC_CONTRACT_ABI = [
   }
 ];
 export const USDC_DECIMAL = 6;
+export const MSG_CONNECT_WALLET = "Please connect your wallet.";
+export const MSG_SWITCH_NETWORK =
+  "Please switch network to Linea Goerli testnet";
+export const CHAIN_ID = 59140;

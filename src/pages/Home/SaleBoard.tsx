@@ -1,16 +1,17 @@
 import { useState, ChangeEvent, useMemo, useEffect } from 'react'
 import { Button } from '@material-tailwind/react'
-import { useAccount, useContractRead, useContractWrite, usePrepareContractWrite, useWaitForTransaction } from 'wagmi'
+import { useAccount, useContractRead, useContractWrite, useNetwork, usePrepareContractWrite, useWaitForTransaction } from 'wagmi'
 import { toast } from 'react-toastify'
 import { formatUnits, parseUnits } from 'viem'
 import Input from "../../components/Input"
-import { IDO_CONTRACT_ABI, IDO_CONTRACT_ADDRESS, REGEX_NUMBER_VALID, USDC_CONTRACT_ABI, USDC_CONTRACT_ADDRESS, USDC_DECIMAL } from '../../utils/constants'
+import { CHAIN_ID, IDO_CONTRACT_ABI, IDO_CONTRACT_ADDRESS, MSG_CONNECT_WALLET, MSG_SWITCH_NETWORK, REGEX_NUMBER_VALID, USDC_CONTRACT_ABI, USDC_CONTRACT_ADDRESS, USDC_DECIMAL } from '../../utils/constants'
 
 export default function SaleBoard() {
   const [amount, setAmount] = useState<string>('0')
   const [approved, setApproved] = useState<boolean>(false)
 
-  const { address } = useAccount()
+  const { address, isConnected } = useAccount()
+  const { chain } = useNetwork()
 
   //  -----------------------------------------------------------------
 
@@ -86,10 +87,18 @@ export default function SaleBoard() {
   }
 
   const handleBuy = () => {
-    if (approvedUsdc >= Number(amount)) {
-      buyWithUSDT?.()
+    if (isConnected) {
+      if (chain?.id === CHAIN_ID) {
+        if (approvedUsdc >= Number(amount)) {
+          buyWithUSDT?.()
+        } else {
+          approve?.()
+        }
+      } else {
+        toast.warn(MSG_SWITCH_NETWORK)
+      }
     } else {
-      approve?.()
+      toast.info(MSG_CONNECT_WALLET)
     }
   }
 
