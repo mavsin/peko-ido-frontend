@@ -1,4 +1,4 @@
-// import { Button } from '@material-tailwind/react'
+import { Button } from '@material-tailwind/react'
 
 export default function Claim1() {
   return (
@@ -25,9 +25,9 @@ export default function Claim1() {
         </div> */}
       </div>
 
-      {/* <div className="col-span-7 md:col-span-4 flex flex-col justify-center items-center">
-        <Button color="amber" className="text-base normal-case">Claim ETH and PEKO</Button>
-      </div> */}
+      <div className="col-span-7 md:col-span-4 flex flex-col justify-center items-center">
+        <Button color="amber" className="text-base normal-case">Claim PEKO</Button>
+      </div>
     </div>
   )
 }
