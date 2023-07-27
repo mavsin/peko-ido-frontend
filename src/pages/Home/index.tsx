@@ -7,7 +7,7 @@ import { TSaleMode } from "../../utils/types"
 
 const SaleBoard = lazy(() => import('./SaleBoard'))
 const Claim1 = lazy(() => import('./Claim1'))
-const Claim2 = lazy(() => import('./Claim2'))
+// const Claim2 = lazy(() => import('./Claim2'))
 const SaleInfoBoard = lazy(() => import('./SaleInfoBoard'))
 
 //  ------------------------------------------------------------------------------------------------------
@@ -51,13 +51,13 @@ export default function Home() {
             <div className="border-2 border-yellow-800 rounded-md">
               {/* title */}
               <div className="py-2 px-4 border-b-2 border-yellow-800">
-                <h2 className="text-yellow-800 text-lg">Total raised: <span className="uppercase">- - ETH (- - %)</span></h2>
+                <h2 className="text-yellow-800 text-lg">Total raised: <span className="uppercase">- - ETH</span></h2>
               </div>
               {/* Content 1 */}
               <Claim1 />
 
               {/* Content 2 */}
-              <Claim2 />
+              {/* <Claim2 /> */}
             </div>
           </div>
 
