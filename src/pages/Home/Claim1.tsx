@@ -3,7 +3,7 @@ import { Button } from '@material-tailwind/react'
 import { useAccount, useContractRead, useContractWrite, useNetwork, usePrepareContractWrite, useWaitForTransaction } from 'wagmi'
 import { formatUnits } from 'viem';
 import { toast } from 'react-toastify';
-import { BASE_DECIMAL, CHAIN_ID, IDO_CONTRACT_ABI, IDO_CONTRACT_ADDRESS, MSG_CONNECT_WALLET, MSG_SWITCH_NETWORK } from '../../utils/constants'
+import { CHAIN_ID, IDO_CONTRACT_ABI, IDO_CONTRACT_ADDRESS, MSG_CONNECT_WALLET, MSG_SWITCH_NETWORK, PEKO_DECIMAL } from '../../utils/constants'
 
 export default function Claim1() {
   const { address, isConnected } = useAccount()
@@ -25,7 +25,7 @@ export default function Claim1() {
   //  Claimable PEKO amount in number
   const claimAmount = useMemo<number>(() => {
     if (typeof claimAmountInBigint === 'bigint') {
-      return Number(formatUnits(claimAmountInBigint, BASE_DECIMAL))
+      return Number(formatUnits(claimAmountInBigint, PEKO_DECIMAL))
     }
     return 0
   }, [claimAmountInBigint])

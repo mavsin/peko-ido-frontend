@@ -4,7 +4,7 @@ import { useAccount, useContractRead, useContractWrite, useNetwork, usePrepareCo
 import { toast } from 'react-toastify'
 import { formatUnits, parseEther } from 'viem'
 import Input from "../../components/Input"
-import { BASE_DECIMAL, CEIL_OF_ETH_AMOUNT_TO_PAY, CHAIN_ID, FLOOR_OF_ETH_AMOUNT_TO_PAY, IDO_CONTRACT_ABI, IDO_CONTRACT_ADDRESS, MSG_CONNECT_WALLET, MSG_SWITCH_NETWORK, REGEX_NUMBER_VALID } from '../../utils/constants'
+import { CEIL_OF_ETH_AMOUNT_TO_PAY, CHAIN_ID, ETH_DECIMAL, FLOOR_OF_ETH_AMOUNT_TO_PAY, IDO_CONTRACT_ABI, IDO_CONTRACT_ADDRESS, MSG_CONNECT_WALLET, MSG_SWITCH_NETWORK, REGEX_NUMBER_VALID } from '../../utils/constants'
 
 export default function SaleBoard() {
   const [amount, setAmount] = useState<string>('0')
@@ -68,7 +68,7 @@ export default function SaleBoard() {
   //  The price of 1 PEKO in ETH
   const priceOfPekoInEth = useMemo<number>(() => {
     if (typeof priceOfPekoInBigint === 'bigint') {
-      return Number(formatUnits(priceOfPekoInBigint, BASE_DECIMAL))
+      return Number(formatUnits(priceOfPekoInBigint, ETH_DECIMAL))
     }
     return 0
   }, [priceOfPekoInBigint])
@@ -92,7 +92,6 @@ export default function SaleBoard() {
     address: IDO_CONTRACT_ADDRESS,
     abi: IDO_CONTRACT_ABI,
     functionName: 'buy',
-    // value: parseUnits(`${ethAmountToPay}`, BASE_DECIMAL)
     value: parseEther(`${ethAmountToPay}`)
   })
   const { write: buy, data: dataOfBuy } = useContractWrite(configOfBuy)

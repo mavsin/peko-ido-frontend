@@ -14,12 +14,11 @@ export const SOCIAL_LINKS: Array<ISocialLink> = [
 ];
 export const REGEX_NUMBER_VALID = /^[0-9]*\.?[0-9]*$/;
 export const IDO_CONTRACT_ADDRESS =
-  "0x78482Cb2CD0AAE78142122CC53E5Fd63D8d22681";
+  "0x438f2D399638931306d402511BD22a5233b929D2";
 export const IDO_CONTRACT_ABI = [
   {
     inputs: [
-      { internalType: "address", name: "_rewardAddress", type: "address" },
-      { internalType: "address", name: "_usdtAddress", type: "address" }
+      { internalType: "address", name: "_rewardAddress", type: "address" }
     ],
     stateMutability: "nonpayable",
     type: "constructor"
@@ -73,10 +72,12 @@ export const IDO_CONTRACT_ABI = [
   },
   { stateMutability: "payable", type: "fallback" },
   {
-    inputs: [],
-    name: "baseDecimal",
-    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
-    stateMutability: "view",
+    inputs: [
+      { internalType: "address[]", name: "addressesToAdd", type: "address[]" }
+    ],
+    name: "addToWhitelist",
+    outputs: [],
+    stateMutability: "nonpayable",
     type: "function"
   },
   {
@@ -87,21 +88,7 @@ export const IDO_CONTRACT_ABI = [
     type: "function"
   },
   {
-    inputs: [{ internalType: "uint256", name: "usdtAmount", type: "uint256" }],
-    name: "buyWithUSDT",
-    outputs: [{ internalType: "bool", name: "", type: "bool" }],
-    stateMutability: "nonpayable",
-    type: "function"
-  },
-  {
-    inputs: [{ internalType: "uint256", name: "ethAmount", type: "uint256" }],
-    name: "calcEth",
-    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
-    stateMutability: "view",
-    type: "function"
-  },
-  {
-    inputs: [{ internalType: "uint256", name: "usdAmount", type: "uint256" }],
+    inputs: [{ internalType: "uint256", name: "_ethAmount", type: "uint256" }],
     name: "calcTokenAmount",
     outputs: [{ internalType: "uint256", name: "amount", type: "uint256" }],
     stateMutability: "nonpayable",
@@ -142,15 +129,8 @@ export const IDO_CONTRACT_ABI = [
   },
   {
     inputs: [],
-    name: "getClaimStatus",
-    outputs: [{ internalType: "bool", name: "", type: "bool" }],
-    stateMutability: "view",
-    type: "function"
-  },
-  {
-    inputs: [],
     name: "getPrice",
-    outputs: [{ internalType: "uint256", name: "tokenPrice", type: "uint256" }],
+    outputs: [{ internalType: "uint256", name: "price", type: "uint256" }],
     stateMutability: "view",
     type: "function"
   },
@@ -158,6 +138,34 @@ export const IDO_CONTRACT_ABI = [
     inputs: [],
     name: "owner",
     outputs: [{ internalType: "address", name: "", type: "address" }],
+    stateMutability: "view",
+    type: "function"
+  },
+  {
+    inputs: [],
+    name: "privateSaleAllocation",
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    stateMutability: "view",
+    type: "function"
+  },
+  {
+    inputs: [],
+    name: "privateSaleTotalSaled",
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    stateMutability: "view",
+    type: "function"
+  },
+  {
+    inputs: [],
+    name: "publicSaleAllocation",
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    stateMutability: "view",
+    type: "function"
+  },
+  {
+    inputs: [],
+    name: "publicSaleTotalSaled",
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
     stateMutability: "view",
     type: "function"
   },
@@ -177,44 +185,23 @@ export const IDO_CONTRACT_ABI = [
   },
   {
     inputs: [],
-    name: "resetStartTime",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function"
-  },
-  {
-    inputs: [{ internalType: "uint256", name: "_price", type: "uint256" }],
-    name: "setETHPrice",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function"
-  },
-  {
-    inputs: [],
-    name: "startClaim",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function"
-  },
-  {
-    inputs: [],
-    name: "startTime",
+    name: "saleIndex",
     outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
     stateMutability: "view",
     type: "function"
   },
   {
-    inputs: [],
-    name: "stopClaim",
+    inputs: [{ internalType: "uint256", name: "_saleIndex", type: "uint256" }],
+    name: "startSale",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function"
   },
   {
     inputs: [],
-    name: "totalSaled",
-    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
-    stateMutability: "view",
+    name: "stopSale",
+    outputs: [],
+    stateMutability: "nonpayable",
     type: "function"
   },
   {
@@ -222,13 +209,6 @@ export const IDO_CONTRACT_ABI = [
     name: "transferOwnership",
     outputs: [],
     stateMutability: "nonpayable",
-    type: "function"
-  },
-  {
-    inputs: [],
-    name: "usdtTotalSaled",
-    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
-    stateMutability: "view",
     type: "function"
   },
   {
@@ -929,10 +909,15 @@ export const MSG_CONNECT_WALLET = "Please connect your wallet.";
 export const MSG_SWITCH_NETWORK =
   "Please switch network to Linea Goerli testnet";
 export const CHAIN_ID = 59140;
-export const BASE_DECIMAL = 6;
 export const FLOOR_OF_ETH_AMOUNT_TO_PAY = 0.2;
 export const CEIL_OF_ETH_AMOUNT_TO_PAY = 2;
 export const PEKO_CONTRACT_ADDRESS =
   "0x73ab0d67d74517e0bc9d406d06a744aaa097f96e";
 export const OWNER_WALLET_ADDRESS =
   "0xB9E3C5693f0B808f50410C4fd28ee7f2B88E1B18";
+export const HARD_CAP_OF_PRIVATE_SALE_IN_ETH = 53;
+export const HARD_CAP_OF_PUBLIC_SALE_IN_ETH = 65;
+export const SALE_INDEX_OF_PRIVATE_SALE = 1;
+export const SALE_INDEX_OF_PUBLIC_SALE = 2;
+export const PEKO_DECIMAL = 6;
+export const ETH_DECIMAL = 18;
