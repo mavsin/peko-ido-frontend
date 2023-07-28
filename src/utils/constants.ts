@@ -14,7 +14,7 @@ export const SOCIAL_LINKS: Array<ISocialLink> = [
 ];
 export const REGEX_NUMBER_VALID = /^[0-9]*\.?[0-9]*$/;
 export const IDO_CONTRACT_ADDRESS =
-  "0x491c8f4f2f3a5f6a8625c8bfe51faba6f51c0d09";
+  "0x78482Cb2CD0AAE78142122CC53E5Fd63D8d22681";
 export const IDO_CONTRACT_ABI = [
   {
     inputs: [
@@ -80,10 +80,24 @@ export const IDO_CONTRACT_ABI = [
     type: "function"
   },
   {
+    inputs: [],
+    name: "buy",
+    outputs: [],
+    stateMutability: "payable",
+    type: "function"
+  },
+  {
     inputs: [{ internalType: "uint256", name: "usdtAmount", type: "uint256" }],
     name: "buyWithUSDT",
     outputs: [{ internalType: "bool", name: "", type: "bool" }],
     stateMutability: "nonpayable",
+    type: "function"
+  },
+  {
+    inputs: [{ internalType: "uint256", name: "ethAmount", type: "uint256" }],
+    name: "calcEth",
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    stateMutability: "view",
     type: "function"
   },
   {
@@ -155,8 +169,22 @@ export const IDO_CONTRACT_ABI = [
     type: "function"
   },
   {
+    inputs: [{ internalType: "uint256", name: "_price", type: "uint256" }],
+    name: "resetPrice",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function"
+  },
+  {
     inputs: [],
     name: "resetStartTime",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function"
+  },
+  {
+    inputs: [{ internalType: "uint256", name: "_price", type: "uint256" }],
+    name: "setETHPrice",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function"
@@ -199,6 +227,13 @@ export const IDO_CONTRACT_ABI = [
   {
     inputs: [],
     name: "usdtTotalSaled",
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    stateMutability: "view",
+    type: "function"
+  },
+  {
+    inputs: [{ internalType: "address", name: "", type: "address" }],
+    name: "userDeposited",
     outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
     stateMutability: "view",
     type: "function"
@@ -894,3 +929,6 @@ export const MSG_CONNECT_WALLET = "Please connect your wallet.";
 export const MSG_SWITCH_NETWORK =
   "Please switch network to Linea Goerli testnet";
 export const CHAIN_ID = 59140;
+export const BASE_DECIMAL = 6;
+export const FLOOR_OF_ETH_AMOUNT_TO_PAY = 0.2;
+export const CEIL_OF_ETH_AMOUNT_TO_PAY = 2;
