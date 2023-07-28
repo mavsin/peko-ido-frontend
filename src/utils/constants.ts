@@ -932,3 +932,5 @@ export const CHAIN_ID = 59140;
 export const BASE_DECIMAL = 6;
 export const FLOOR_OF_ETH_AMOUNT_TO_PAY = 0.2;
 export const CEIL_OF_ETH_AMOUNT_TO_PAY = 2;
+export const PEKO_CONTRACT_ADDRESS =
+  "0x73ab0d67d74517e0bc9d406d06a744aaa097f96e";
