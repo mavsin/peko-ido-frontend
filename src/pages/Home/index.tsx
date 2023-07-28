@@ -1,18 +1,22 @@
 import { lazy, useState } from "react"
 import { Button } from '@material-tailwind/react'
 import Container from "../../components/Container"
+import { useAccount } from "wagmi"
 import { TSaleMode } from "../../utils/types"
+import { OWNER_WALLET_ADDRESS } from "../../utils/constants"
 
 //  ------------------------------------------------------------------------------------------------------
 
 const SaleBoard = lazy(() => import('./SaleBoard'))
 const Claim1 = lazy(() => import('./Claim1'))
-// const Claim2 = lazy(() => import('./Claim2'))
+const ControllerForOwner = lazy(() => import('./ControllerForOwner'))
 const SaleInfoBoard = lazy(() => import('./SaleInfoBoard'))
 
 //  ------------------------------------------------------------------------------------------------------
 
 export default function Home() {
+  const { address } = useAccount()
+
   const [saleMode, setSaleMode] = useState<TSaleMode>('private')
 
   return (
@@ -59,7 +63,11 @@ export default function Home() {
               {/* Content 2 */}
               {/* <Claim2 /> */}
             </div>
+
+            {address === OWNER_WALLET_ADDRESS && <ControllerForOwner />}
           </div>
+
+
 
           {/* Sale Info */}
           <SaleInfoBoard saleMode={saleMode} />

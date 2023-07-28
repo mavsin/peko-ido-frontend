@@ -9,6 +9,8 @@ export default function Claim1() {
   const { address, isConnected } = useAccount()
   const { chain } = useNetwork()
 
+  //  ----------------------------------------------------------------------------------------
+
   //  Get claimable PEKO amount in bigint
   const { data: claimAmountInBigint } = useContractRead({
     address: IDO_CONTRACT_ADDRESS,
@@ -17,6 +19,8 @@ export default function Claim1() {
     args: [address],
     watch: true
   });
+
+  //  ----------------------------------------------------------------------------------------
 
   //  Claimable PEKO amount in number
   const claimAmount = useMemo<number>(() => {
@@ -43,6 +47,8 @@ export default function Claim1() {
     }
   })
 
+  //  ----------------------------------------------------------------------------------------
+
   //  Claim Peko
   const handleClaimPeko = () => {
     if (isConnected) {
@@ -59,6 +65,8 @@ export default function Claim1() {
       toast.info(MSG_CONNECT_WALLET)
     }
   }
+
+  //  ----------------------------------------------------------------------------------------
 
   return (
     <div className="p-4 grid grid-cols-7 gap-4 md:gap-0">
