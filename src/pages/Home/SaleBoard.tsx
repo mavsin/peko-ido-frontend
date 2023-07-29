@@ -80,14 +80,18 @@ export default function SaleBoard({ saleIndex }: IProps) {
   const handleBuy = () => {
     if (isConnected) {
       if (chain?.id === CHAIN_ID) {
-        if (Number(amount) >= FLOOR_OF_ETH_AMOUNT_TO_PAY && Number(amount) <= CEIL_OF_ETH_AMOUNT_TO_PAY) {
-          if (buy) {
-            buy()
+        if (saleIndex === 1) {
+          if (Number(amount) >= FLOOR_OF_ETH_AMOUNT_TO_PAY && Number(amount) <= CEIL_OF_ETH_AMOUNT_TO_PAY) {
+            if (buy) {
+              buy()
+            } else {
+              toast.warn("You aren't whitelisted.")
+            }
           } else {
-            toast.warn("You aren't whitelisted.")
+            toast.warn(`You must purchase ${FLOOR_OF_ETH_AMOUNT_TO_PAY} to ${CEIL_OF_ETH_AMOUNT_TO_PAY} PEKO.`)
           }
         } else {
-          toast.warn(`You must purchase ${FLOOR_OF_ETH_AMOUNT_TO_PAY} to ${CEIL_OF_ETH_AMOUNT_TO_PAY} PEKO.`)
+          buy?.()
         }
       } else {
         toast.warn(MSG_SWITCH_NETWORK)
