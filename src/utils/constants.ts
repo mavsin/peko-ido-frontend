@@ -1,4 +1,4 @@
-import type { ISocialLink } from "./interfaces";
+import type { ISaleInfo, ISocialLink } from "./interfaces";
 
 export const SOCIAL_LINKS: Array<ISocialLink> = [
   {
@@ -914,10 +914,37 @@ export const CEIL_OF_ETH_AMOUNT_TO_PAY = 2;
 export const PEKO_CONTRACT_ADDRESS =
   "0x73ab0d67d74517e0bc9d406d06a744aaa097f96e";
 export const OWNER_WALLET_ADDRESS =
-  "0xB9E3C5693f0B808f50410C4fd28ee7f2B88E1B18";
+  "0x055f9fb7424651a7f4541827c1b54733d00259e8";
 export const HARD_CAP_OF_PRIVATE_SALE_IN_ETH = 53;
 export const HARD_CAP_OF_PUBLIC_SALE_IN_ETH = 65;
 export const SALE_INDEX_OF_PRIVATE_SALE = 1;
 export const SALE_INDEX_OF_PUBLIC_SALE = 2;
 export const PEKO_DECIMAL = 6;
 export const ETH_DECIMAL = 18;
+export const SALE_INFOS: Array<ISaleInfo> = [
+  {
+    startAt: "- - - -  - -  - -  - - : - - : - -",
+    endAt: "- - - -  - -  - -  - - : - - : - -",
+    saleType: "Pending",
+    method: "- - - - -",
+    hardCap: "- -",
+    priceInEth: "- -"
+  },
+  {
+    startAt: "2023-08-03 00:00:00",
+    endAt: "2023-08-05 00:00:00",
+    saleType: "Private",
+    method: "Normal",
+    hardCap: 53,
+    priceInEth: 0,
+    personalCap: [0.01, 10]
+  },
+  {
+    startAt: "2023-08-05 00:00:00",
+    endAt: "2023-08-07 00:00:00",
+    saleType: "Public",
+    method: "Overflow",
+    hardCap: 65,
+    priceInEth: 0
+  }
+];

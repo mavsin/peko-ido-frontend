@@ -1,9 +1,10 @@
-import { lazy, useState } from "react"
+import { lazy, useMemo, useEffect, useState } from "react"
 import { Button } from '@material-tailwind/react'
+import { useAccount, useContractRead } from "wagmi"
+import { IDO_CONTRACT_ABI, IDO_CONTRACT_ADDRESS, SALE_INFOS } from "../../utils/constants"
+import { formatEther } from "viem"
+import { ISaleInfo } from "../../utils/interfaces"
 import Container from "../../components/Container"
-import { useAccount } from "wagmi"
-import { TSaleMode } from "../../utils/types"
-import { OWNER_WALLET_ADDRESS } from "../../utils/constants"
 
 //  ------------------------------------------------------------------------------------------------------
 
@@ -15,9 +16,67 @@ const SaleInfoBoard = lazy(() => import('./SaleInfoBoard'))
 //  ------------------------------------------------------------------------------------------------------
 
 export default function Home() {
+  const [saleInfo, setSaleInfo] = useState<ISaleInfo>(SALE_INFOS[0])
+
   const { address } = useAccount()
 
-  const [saleMode, setSaleMode] = useState<TSaleMode>('private')
+  //  Owner's wallet address
+  const { data: walletAddressOfOwner } = useContractRead({
+    address: IDO_CONTRACT_ADDRESS,
+    abi: IDO_CONTRACT_ABI,
+    functionName: 'owner',
+    watch: true
+  })
+
+  const { data: saleIndexInBigint } = useContractRead({
+    address: IDO_CONTRACT_ADDRESS,
+    abi: IDO_CONTRACT_ABI,
+    functionName: 'saleIndex',
+    watch: true
+  })
+
+  //  Get the price of 1 PEKO
+  const { data: priceOfPekoInBigint } = useContractRead({
+    address: IDO_CONTRACT_ADDRESS,
+    abi: IDO_CONTRACT_ABI,
+    functionName: 'getPrice'
+  })
+
+  //  The price of 1 PEKO in ETH
+  const priceOfPekoInEth = useMemo<number>(() => {
+    if (typeof priceOfPekoInBigint === 'bigint') {
+      return Number(formatEther(priceOfPekoInBigint))
+    }
+    return 0
+  }, [priceOfPekoInBigint])
+
+  /**
+   * 0: Pending
+   * 1: Private sale
+   * 2: Public sale
+   */
+  const saleIndex = useMemo<number>(() => {
+    if (saleIndexInBigint !== undefined) {
+      return Number(saleIndexInBigint)
+    }
+    return -1
+  }, [saleIndexInBigint])
+
+  console.log('>>>>>>>> saleIndex => ', saleIndex)
+
+  useEffect(() => {
+    const _saleInfo = SALE_INFOS[saleIndex]
+    if (_saleInfo) {
+      if (saleIndex === 1) {
+        _saleInfo.priceInEth = priceOfPekoInEth
+        _saleInfo.saleType = 'Private'
+      } else if (saleIndex === 2) {
+        _saleInfo.priceInEth = priceOfPekoInEth
+        _saleInfo.saleType = 'Public'
+      }
+      setSaleInfo(_saleInfo)
+    }
+  }, [saleIndex])
 
   return (
     <Container>
@@ -27,14 +86,12 @@ export default function Home() {
             <Button
               color="amber"
               variant="outlined"
-              className={`text-lg font-normal normal-case py-2 rounded-tr-none rounded-br-none ${saleMode === 'private' ? 'text-gray-100' : ''}`}
-              onClick={() => setSaleMode('private')}
+              className={`text-lg font-normal normal-case py-2 rounded-tr-none rounded-br-none ${saleIndex === 1 ? 'text-gray-100' : ''}`}
             >Private</Button>
             <Button
               color="amber"
               variant="outlined"
-              className={`text-lg font-normal normal-case py-2 rounded-tl-none rounded-bl-none ${saleMode === 'public' ? 'text-gray-100' : ''}`}
-              onClick={() => setSaleMode('public')}
+              className={`text-lg font-normal normal-case py-2 rounded-tl-none rounded-bl-none ${saleIndex === 2 ? 'text-gray-100' : ''}`}
             >Public</Button>
           </div>
         </div>
@@ -48,7 +105,7 @@ export default function Home() {
                 <img src="/assets/images/logo.png" alt="Logo" className="w-40" />
               </div>
 
-              <SaleBoard />
+              <SaleBoard priceOfPekoInBigint={priceOfPekoInBigint} />
             </div>
 
             {/* Total raised */}
@@ -57,20 +114,15 @@ export default function Home() {
               <div className="py-2 px-4 border-b-2 border-yellow-800">
                 <h2 className="text-yellow-800 text-lg">Total raised: <span className="uppercase">- - ETH</span></h2>
               </div>
+
               {/* Content 1 */}
               <Claim1 />
-
-              {/* Content 2 */}
-              {/* <Claim2 /> */}
             </div>
-
-            {address === OWNER_WALLET_ADDRESS && <ControllerForOwner />}
+            {address === walletAddressOfOwner && <ControllerForOwner />}
           </div>
 
-
-
           {/* Sale Info */}
-          <SaleInfoBoard saleMode={saleMode} />
+          <SaleInfoBoard saleInfo={saleInfo} />
         </div>
       </div>
     </Container>
