@@ -3,7 +3,7 @@ import { Button } from '@material-tailwind/react'
 import { useAccount, useContractRead, useContractWrite, useNetwork, usePrepareContractWrite, useWaitForTransaction } from 'wagmi'
 import { formatEther, formatUnits } from 'viem';
 import { toast } from 'react-toastify';
-import { CHAIN_ID, IDO_CONTRACT_ABI, IDO_CONTRACT_ADDRESS, MSG_CONNECT_WALLET, MSG_SWITCH_NETWORK, PEKO_DECIMAL } from '../../utils/constants'
+import { CHAIN_ID, FIXED_DECIMAL, IDO_CONTRACT_ABI, IDO_CONTRACT_ADDRESS, MSG_CONNECT_WALLET, MSG_SWITCH_NETWORK, PEKO_DECIMAL } from '../../utils/constants'
 
 export default function Claim1() {
   const { address, isConnected } = useAccount()
@@ -19,6 +19,7 @@ export default function Claim1() {
     args: [address],
     watch: true
   });
+  console.log('>>>>>>>>> claimAmountInBigint => ', claimAmountInBigint)
 
   //  Get paid eth amount of a user
   const { data: paidEthAmountInBigint } = useContractRead({
@@ -94,7 +95,7 @@ export default function Claim1() {
           {/* Total purchased */}
           <div className="flex items-center justify-between">
             <span className="text-sm text-gray-500">Total Purchased:</span>
-            <span className="text-base text-gray-100 uppercase font-bold">{paidEthAmount} ETH</span>
+            <span className="text-base text-gray-100 uppercase font-bold">{paidEthAmount.toFixed(FIXED_DECIMAL)} ETH</span>
           </div>
 
           {/* Receivable PEKO */}

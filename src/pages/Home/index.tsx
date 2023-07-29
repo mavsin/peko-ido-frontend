@@ -2,7 +2,7 @@ import { lazy, useMemo, useEffect, useState } from "react"
 import { Button } from '@material-tailwind/react'
 import { useAccount, useContractRead } from "wagmi"
 import { formatEther, formatUnits } from "viem"
-import { ETH_DECIMAL, IDO_CONTRACT_ABI, IDO_CONTRACT_ADDRESS, PEKO_DECIMAL, SALE_INFOS } from "../../utils/constants"
+import { ETH_DECIMAL, FIXED_DECIMAL, IDO_CONTRACT_ABI, IDO_CONTRACT_ADDRESS, PEKO_DECIMAL, SALE_INFOS } from "../../utils/constants"
 import { ISaleInfo } from "../../utils/interfaces"
 import Container from "../../components/Container"
 
@@ -145,7 +145,7 @@ export default function Home() {
                 <img src="/assets/images/logo.png" alt="Logo" className="w-40" />
               </div>
 
-              <SaleBoard priceOfPekoInEth={priceOfPekoInEth} />
+              <SaleBoard saleIndex={saleIndex} />
             </div>
 
             {/* Total raised */}
@@ -153,7 +153,7 @@ export default function Home() {
               {/* title */}
               <div className="py-2 px-4 border-b-2 border-yellow-800">
                 <h2 className="text-yellow-800 text-lg">
-                  Total raised: <span className="uppercase">{saleIndex === 1 ? privateTotalRaisedInEth : saleIndex === 2 ? publicTotalRaisedInEth : '- -'} ETH</span>
+                  Total raised: <span className="uppercase">{saleIndex === 1 ? privateTotalRaisedInEth.toFixed(FIXED_DECIMAL) : saleIndex === 2 ? publicTotalRaisedInEth.toFixed(FIXED_DECIMAL) : '- -'} ETH</span>
                 </h2>
               </div>
 

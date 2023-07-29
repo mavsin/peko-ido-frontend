@@ -948,3 +948,5 @@ export const SALE_INFOS: Array<ISaleInfo> = [
     priceInEth: 0
   }
 ];
+
+export const FIXED_DECIMAL = 6;
