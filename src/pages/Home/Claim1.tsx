@@ -102,7 +102,7 @@ export default function Claim1() {
           <div className="flex items-center justify-between">
             <span className="text-sm text-gray-500">Receivable PEKO:</span>
             <span className="text-base text-gray-100 uppercase font-bold">
-              {isConnected && chain?.id === CHAIN_ID ? claimAmount : '- -'} PEKO
+              {claimAmount} PEKO
             </span>
           </div>
         </div>
