@@ -65,17 +65,17 @@ export default function ControllerForOwner() {
         <Button
           color="amber"
           className="text-base normal-case w-full"
-          disabled={startPublicSaleIsLoading || !startPublicSaleIsPrepared}
-          onClick={() => startPublicSale?.()}
-        >Start public sale</Button>
+          disabled={startPrivateSaleIsLoading || !startPrivateSaleIsPrepared}
+          onClick={() => startPrivateSale?.()}
+        >Start private sale</Button>
       </div>
       <div>
         <Button
           color="amber"
           className="text-base normal-case w-full"
-          disabled={startPrivateSaleIsLoading || !startPrivateSaleIsPrepared}
-          onClick={() => startPrivateSale?.()}
-        >Start private sale</Button>
+          disabled={startPublicSaleIsLoading || !startPublicSaleIsPrepared}
+          onClick={() => startPublicSale?.()}
+        >Start public sale</Button>
       </div>
       <div>
         <Button

@@ -909,8 +909,8 @@ export const MSG_CONNECT_WALLET = "Please connect your wallet.";
 export const MSG_SWITCH_NETWORK =
   "Please switch network to Linea Goerli testnet";
 export const CHAIN_ID = 59140;
-export const FLOOR_OF_ETH_AMOUNT_TO_PAY = 0.2;
-export const CEIL_OF_ETH_AMOUNT_TO_PAY = 2;
+export const FLOOR_OF_ETH_AMOUNT_TO_PAY = 0.01;
+export const CEIL_OF_ETH_AMOUNT_TO_PAY = 10;
 export const PEKO_CONTRACT_ADDRESS =
   "0x73ab0d67d74517e0bc9d406d06a744aaa097f96e";
 export const OWNER_WALLET_ADDRESS =

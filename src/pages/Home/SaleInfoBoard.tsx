@@ -44,7 +44,7 @@ export default function SaleInfoBoard({ saleInfo }: IProps) {
         {saleInfo.personalCap ? (
           <div className="flex flex-col gap-1">
             <span className="text-gray-500 text-sm">Personal cap</span>
-            <span className="text-gray-100 text-base font-bold">{saleInfo.personalCap[0]} ETH - {saleInfo.personalCap} ETH</span>
+            <span className="text-gray-100 text-base font-bold">{saleInfo.personalCap[0]} ETH - {saleInfo.personalCap[1]} ETH</span>
           </div>
         ) : (
           <div className="flex flex-col gap-1">

@@ -1,8 +1,8 @@
 import { lazy, useMemo, useEffect, useState } from "react"
 import { Button } from '@material-tailwind/react'
 import { useAccount, useContractRead } from "wagmi"
-import { IDO_CONTRACT_ABI, IDO_CONTRACT_ADDRESS, SALE_INFOS } from "../../utils/constants"
-import { formatEther } from "viem"
+import { formatEther, formatUnits } from "viem"
+import { ETH_DECIMAL, IDO_CONTRACT_ABI, IDO_CONTRACT_ADDRESS, PEKO_DECIMAL, SALE_INFOS } from "../../utils/constants"
 import { ISaleInfo } from "../../utils/interfaces"
 import Container from "../../components/Container"
 
@@ -20,6 +20,8 @@ export default function Home() {
 
   const { address } = useAccount()
 
+  //  --------------------------------------------------------------------------
+
   //  Owner's wallet address
   const { data: walletAddressOfOwner } = useContractRead({
     address: IDO_CONTRACT_ADDRESS,
@@ -28,6 +30,7 @@ export default function Home() {
     watch: true
   })
 
+  //  Sale index that indicates sale type
   const { data: saleIndexInBigint } = useContractRead({
     address: IDO_CONTRACT_ADDRESS,
     abi: IDO_CONTRACT_ABI,
@@ -39,13 +42,32 @@ export default function Home() {
   const { data: priceOfPekoInBigint } = useContractRead({
     address: IDO_CONTRACT_ADDRESS,
     abi: IDO_CONTRACT_ABI,
-    functionName: 'getPrice'
+    functionName: 'getPrice',
+    watch: true
   })
+
+  // Private total saled in ETH
+  const { data: privateTotalRaisedInBigint } = useContractRead({
+    address: IDO_CONTRACT_ADDRESS,
+    abi: IDO_CONTRACT_ABI,
+    functionName: 'privateSaleTotalSaled',
+    watch: true
+  })
+
+  //  Public total saled in ETH
+  const { data: publicTotalRaisedInBigint } = useContractRead({
+    address: IDO_CONTRACT_ADDRESS,
+    abi: IDO_CONTRACT_ABI,
+    functionName: 'publicSaleTotalSaled',
+    watch: true
+  })
+
+  //  --------------------------------------------------------------------------
 
   //  The price of 1 PEKO in ETH
   const priceOfPekoInEth = useMemo<number>(() => {
     if (typeof priceOfPekoInBigint === 'bigint') {
-      return Number(formatEther(priceOfPekoInBigint))
+      return Number(formatUnits(priceOfPekoInBigint, ETH_DECIMAL - PEKO_DECIMAL))
     }
     return 0
   }, [priceOfPekoInBigint])
@@ -62,7 +84,23 @@ export default function Home() {
     return -1
   }, [saleIndexInBigint])
 
-  console.log('>>>>>>>> saleIndex => ', saleIndex)
+  //  Private total raised in ETH
+  const privateTotalRaisedInEth = useMemo<number>(() => {
+    if (typeof privateTotalRaisedInBigint === 'bigint') {
+      return Number(formatEther(privateTotalRaisedInBigint))
+    }
+    return 0
+  }, [privateTotalRaisedInBigint])
+
+  //  Public total raised in ETH
+  const publicTotalRaisedInEth = useMemo<number>(() => {
+    if (typeof publicTotalRaisedInBigint === 'bigint') {
+      return Number(formatEther(publicTotalRaisedInBigint))
+    }
+    return 0
+  }, [publicTotalRaisedInBigint])
+
+  //  --------------------------------------------------------------------------
 
   useEffect(() => {
     const _saleInfo = SALE_INFOS[saleIndex]
@@ -86,11 +124,13 @@ export default function Home() {
             <Button
               color="amber"
               variant="outlined"
+              disabled={saleIndex !== 1}
               className={`text-lg font-normal normal-case py-2 rounded-tr-none rounded-br-none ${saleIndex === 1 ? 'text-gray-100' : ''}`}
             >Private</Button>
             <Button
               color="amber"
               variant="outlined"
+              disabled={saleIndex !== 2}
               className={`text-lg font-normal normal-case py-2 rounded-tl-none rounded-bl-none ${saleIndex === 2 ? 'text-gray-100' : ''}`}
             >Public</Button>
           </div>
@@ -105,14 +145,16 @@ export default function Home() {
                 <img src="/assets/images/logo.png" alt="Logo" className="w-40" />
               </div>
 
-              <SaleBoard priceOfPekoInBigint={priceOfPekoInBigint} />
+              <SaleBoard priceOfPekoInEth={priceOfPekoInEth} />
             </div>
 
             {/* Total raised */}
             <div className="border-2 border-yellow-800 rounded-md">
               {/* title */}
               <div className="py-2 px-4 border-b-2 border-yellow-800">
-                <h2 className="text-yellow-800 text-lg">Total raised: <span className="uppercase">- - ETH</span></h2>
+                <h2 className="text-yellow-800 text-lg">
+                  Total raised: <span className="uppercase">{saleIndex === 1 ? privateTotalRaisedInEth : saleIndex === 2 ? publicTotalRaisedInEth : '- -'} ETH</span>
+                </h2>
               </div>
 
               {/* Content 1 */}

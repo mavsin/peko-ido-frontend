@@ -1,34 +1,28 @@
-import { useState, ChangeEvent, useMemo } from 'react'
+import { useState, ChangeEvent, useMemo, useEffect } from 'react'
 import { Button } from '@material-tailwind/react'
 import { useAccount, useContractWrite, useNetwork, usePrepareContractWrite, useWaitForTransaction } from 'wagmi'
 import { toast } from 'react-toastify'
-import { formatUnits, parseEther } from 'viem'
+import { parseEther } from 'viem'
 import Input from "../../components/Input"
-import { CEIL_OF_ETH_AMOUNT_TO_PAY, CHAIN_ID, ETH_DECIMAL, FLOOR_OF_ETH_AMOUNT_TO_PAY, IDO_CONTRACT_ABI, IDO_CONTRACT_ADDRESS, MSG_CONNECT_WALLET, MSG_SWITCH_NETWORK, REGEX_NUMBER_VALID } from '../../utils/constants'
+import { CEIL_OF_ETH_AMOUNT_TO_PAY, CHAIN_ID, FLOOR_OF_ETH_AMOUNT_TO_PAY, IDO_CONTRACT_ABI, IDO_CONTRACT_ADDRESS, MSG_CONNECT_WALLET, MSG_SWITCH_NETWORK, REGEX_NUMBER_VALID } from '../../utils/constants'
 
 //  ----------------------------------------------------------------------------------------
 
 interface IProps {
-  priceOfPekoInBigint: unknown;
+  priceOfPekoInEth: number;
 }
 
 //  ----------------------------------------------------------------------------------------
 
-export default function SaleBoard({ priceOfPekoInBigint }: IProps) {
+export default function SaleBoard({ priceOfPekoInEth }: IProps) {
   const [amount, setAmount] = useState<string>('0')
+  const [maxAmount, setMaxAmount] = useState<number>(0)
+  const [minAmount, setMinAmount] = useState<number>(0)
 
   const { isConnected } = useAccount()
   const { chain } = useNetwork()
 
   //  -----------------------------------------------------------------
-
-  //  The price of 1 PEKO in ETH
-  const priceOfPekoInEth = useMemo<number>(() => {
-    if (typeof priceOfPekoInBigint === 'bigint') {
-      return Number(formatUnits(priceOfPekoInBigint, ETH_DECIMAL))
-    }
-    return 0
-  }, [priceOfPekoInBigint])
 
   //  The amount in number type
   const amountInNumberType = useMemo<string>(() => {
@@ -44,15 +38,15 @@ export default function SaleBoard({ priceOfPekoInBigint }: IProps) {
     return priceOfPekoInEth * Number(amountInNumberType)
   }, [priceOfPekoInEth, amountInNumberType])
 
-  console.log('>>>>>>>> ethAmountToPay => ', ethAmountToPay)
-  console.log('>>>>>>>> `${ethAmountToPay}` => ', `${ethAmountToPay}`)
-
   //  Buy with ETH
   const { config: configOfBuy } = usePrepareContractWrite({
     address: IDO_CONTRACT_ADDRESS,
     abi: IDO_CONTRACT_ABI,
     functionName: 'buy',
-    value: parseEther(`${ethAmountToPay}`)
+    value: parseEther(`${ethAmountToPay}`),
+    onError: (error) => {
+      console.log('>>>>>>>>>> error.message of buy => ', error.message)
+    }
   })
   const { write: buy, data: dataOfBuy } = useContractWrite(configOfBuy)
   const { isLoading: buyIsLoading } = useWaitForTransaction({
@@ -76,9 +70,13 @@ export default function SaleBoard({ priceOfPekoInBigint }: IProps) {
     if (isConnected) {
       if (chain?.id === CHAIN_ID) {
         if (ethAmountToPay >= FLOOR_OF_ETH_AMOUNT_TO_PAY && ethAmountToPay <= CEIL_OF_ETH_AMOUNT_TO_PAY) {
-          buy?.()
+          if (buy) {
+            buy()
+          } else {
+            toast.warn("You aren't whitelisted.")
+          }
         } else {
-          toast.warn(`You must purchase ${FLOOR_OF_ETH_AMOUNT_TO_PAY / priceOfPekoInEth} to ${CEIL_OF_ETH_AMOUNT_TO_PAY / priceOfPekoInEth} PEKO`)
+          toast.warn(`You must purchase ${minAmount} to ${maxAmount} PEKO.`)
         }
       } else {
         toast.warn(MSG_SWITCH_NETWORK)
@@ -87,6 +85,13 @@ export default function SaleBoard({ priceOfPekoInBigint }: IProps) {
       toast.info(MSG_CONNECT_WALLET)
     }
   }
+
+  //  -----------------------------------------------------------------
+
+  useEffect(() => {
+    setMaxAmount(Math.floor(CEIL_OF_ETH_AMOUNT_TO_PAY / priceOfPekoInEth))
+    setMinAmount(Math.ceil(FLOOR_OF_ETH_AMOUNT_TO_PAY / priceOfPekoInEth))
+  }, [priceOfPekoInEth])
 
   //  -----------------------------------------------------------------
 
@@ -105,7 +110,15 @@ export default function SaleBoard({ priceOfPekoInBigint }: IProps) {
               className="!border !border-yellow-800 rounded-lg"
               onChange={handleAmount}
               value={amountInNumberType}
-              endAdornment={<Button color="amber" className="text-base font-normal py-1 px-3 rounded-lg">Max</Button>}
+              endAdornment={
+                <Button
+                  color="amber"
+                  className="text-base font-normal py-1 px-3 rounded-lg"
+                  onClick={() => setAmount(`${maxAmount}`)}
+                >
+                  Max
+                </Button>
+              }
             />
             <Button
               color="amber"

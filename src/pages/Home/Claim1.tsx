@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { Button } from '@material-tailwind/react'
 import { useAccount, useContractRead, useContractWrite, useNetwork, usePrepareContractWrite, useWaitForTransaction } from 'wagmi'
-import { formatUnits } from 'viem';
+import { formatEther, formatUnits } from 'viem';
 import { toast } from 'react-toastify';
 import { CHAIN_ID, IDO_CONTRACT_ABI, IDO_CONTRACT_ADDRESS, MSG_CONNECT_WALLET, MSG_SWITCH_NETWORK, PEKO_DECIMAL } from '../../utils/constants'
 
@@ -19,6 +19,15 @@ export default function Claim1() {
     args: [address],
     watch: true
   });
+
+  //  Get paid eth amount of a user
+  const { data: paidEthAmountInBigint } = useContractRead({
+    address: IDO_CONTRACT_ADDRESS,
+    abi: IDO_CONTRACT_ABI,
+    functionName: 'userDeposited',
+    args: [address],
+    watch: true,
+  })
 
   //  ----------------------------------------------------------------------------------------
 
@@ -49,6 +58,16 @@ export default function Claim1() {
 
   //  ----------------------------------------------------------------------------------------
 
+  //  Paid ETH amount
+  const paidEthAmount = useMemo<number>(() => {
+    if (typeof paidEthAmountInBigint === 'bigint') {
+      return Number(formatEther(paidEthAmountInBigint))
+    }
+    return 0
+  }, [paidEthAmountInBigint])
+
+  //  ----------------------------------------------------------------------------------------
+
   //  Claim Peko
   const handleClaimPeko = () => {
     if (isConnected) {
@@ -75,7 +94,7 @@ export default function Claim1() {
           {/* Total purchased */}
           <div className="flex items-center justify-between">
             <span className="text-sm text-gray-500">Total Purchased:</span>
-            <span className="text-base text-gray-100 uppercase font-bold">- - ETH</span>
+            <span className="text-base text-gray-100 uppercase font-bold">{paidEthAmount} ETH</span>
           </div>
 
           {/* Receivable PEKO */}
