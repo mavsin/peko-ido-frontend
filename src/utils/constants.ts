@@ -14,7 +14,7 @@ export const SOCIAL_LINKS: Array<ISocialLink> = [
 ];
 export const REGEX_NUMBER_VALID = /^[0-9]*\.?[0-9]*$/;
 export const IDO_CONTRACT_ADDRESS =
-  "0xe2E5F73300B964f2c4ef586f03866C0542905c61";
+  "0xC5BBBBb63D4Ad3517366e8aeE77b91B2b95ea043";
 export const IDO_CONTRACT_ABI = [
   {
     inputs: [
@@ -918,7 +918,7 @@ export const CHAIN_ID = 59140;
 export const FLOOR_OF_ETH_AMOUNT_TO_PAY = 0.01;
 export const CEIL_OF_ETH_AMOUNT_TO_PAY = 10;
 export const PEKO_CONTRACT_ADDRESS =
-  "0x7dF961d2Ae7252cD9128f613187dd69D720A5849";
+  "0x8afB9853a7339AC6Aa8e2d75D0AA37D15d4CBEC3";
 export const OWNER_WALLET_ADDRESS =
   "0x055f9fb7424651a7f4541827c1b54733d00259e8";
 export const HARD_CAP_OF_PRIVATE_SALE_IN_ETH = 53;
