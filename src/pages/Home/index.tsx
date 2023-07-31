@@ -112,7 +112,7 @@ export default function Home() {
   //  Score
   const score = useMemo<number>(() => {
     if (typeof scoreInBigint === 'bigint') {
-      return Number(formatUnits(scoreInBigint, PEKO_DECIMAL))
+      return Math.floor(Number(formatUnits(scoreInBigint, PEKO_DECIMAL)))
     }
     return 0
   }, [scoreInBigint])
@@ -181,7 +181,7 @@ export default function Home() {
             <div className="border-2 border-yellow-800 rounded-md">
               <div className="py-2 px-4 ">
                 <h2 className="text-yellow-800 text-lg">
-                  Your score: <span className="uppercase">{address ? score.toFixed(PEKO_DECIMAL) : '- -'} PEKO</span>
+                  Your score: <span className="uppercase">{address ? score : '- -'}</span>
                 </h2>
               </div>
             </div>
