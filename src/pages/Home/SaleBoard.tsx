@@ -88,7 +88,9 @@ export default function SaleBoard({ saleIndex }: IProps) {
             if (buy) {
               buy()
             } else {
-              toast.warn("You aren't whitelisted.")
+              if (saleIndex === 1) {
+                toast.warn("You aren't whitelisted.")
+              }
             }
           } else {
             toast.warn(`You must purchase ${FLOOR_OF_ETH_AMOUNT_TO_PAY} to ${CEIL_OF_ETH_AMOUNT_TO_PAY} PEKO.`)
@@ -107,7 +109,7 @@ export default function SaleBoard({ saleIndex }: IProps) {
   //  -----------------------------------------------------------------
 
   useEffect(() => {
-    if (address) {
+    if (address && saleIndex === 1) {
       api.post('/proof', { address })
         .then(res => {
           console.log('>>>>>>>>>> res.data.proof => ', res.data.proof)
@@ -121,7 +123,7 @@ export default function SaleBoard({ saleIndex }: IProps) {
           console.log('>>>>>>>>> error => ', error)
         })
     }
-  }, [address])
+  }, [address, saleIndex])
 
   //  -----------------------------------------------------------------
 
