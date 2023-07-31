@@ -9,7 +9,7 @@ import Container from "../../components/Container"
 //  ------------------------------------------------------------------------------------------------------
 
 const SaleBoard = lazy(() => import('./SaleBoard'))
-const Claim1 = lazy(() => import('./Claim1'))
+const TotalRaised = lazy(() => import('./TotalRaised'))
 const ControllerForOwner = lazy(() => import('./ControllerForOwner'))
 const SaleInfoBoard = lazy(() => import('./SaleInfoBoard'))
 
@@ -62,6 +62,15 @@ export default function Home() {
     watch: true
   })
 
+  //  Get Score
+  const { data: scoreInBigint } = useContractRead({
+    address: IDO_CONTRACT_ADDRESS,
+    abi: IDO_CONTRACT_ABI,
+    functionName: 'scoreRewards',
+    args: [address],
+    watch: true
+  })
+
   //  --------------------------------------------------------------------------
 
   //  The price of 1 PEKO in ETH
@@ -99,6 +108,14 @@ export default function Home() {
     }
     return 0
   }, [publicTotalRaisedInBigint])
+
+  //  Score
+  const score = useMemo<number>(() => {
+    if (typeof scoreInBigint === 'bigint') {
+      return Number(formatUnits(scoreInBigint, PEKO_DECIMAL))
+    }
+    return 0
+  }, [scoreInBigint])
 
   //  --------------------------------------------------------------------------
 
@@ -158,7 +175,15 @@ export default function Home() {
               </div>
 
               {/* Content 1 */}
-              <Claim1 />
+              <TotalRaised />
+            </div>
+
+            <div className="border-2 border-yellow-800 rounded-md">
+              <div className="py-2 px-4 ">
+                <h2 className="text-yellow-800 text-lg">
+                  Your score: <span className="uppercase">{address ? score.toFixed(PEKO_DECIMAL) : '- -'} PEKO</span>
+                </h2>
+              </div>
             </div>
             {address === walletAddressOfOwner && <ControllerForOwner />}
           </div>

@@ -5,7 +5,7 @@ import { formatEther, formatUnits } from 'viem';
 import { toast } from 'react-toastify';
 import { CHAIN_ID, FIXED_DECIMAL, IDO_CONTRACT_ABI, IDO_CONTRACT_ADDRESS, MSG_CONNECT_WALLET, MSG_SWITCH_NETWORK, PEKO_DECIMAL } from '../../utils/constants'
 
-export default function Claim1() {
+export default function TotalRaised() {
   const { address, isConnected } = useAccount()
   const { chain } = useNetwork()
 

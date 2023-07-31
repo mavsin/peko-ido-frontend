@@ -14,7 +14,7 @@ export const SOCIAL_LINKS: Array<ISocialLink> = [
 ];
 export const REGEX_NUMBER_VALID = /^[0-9]*\.?[0-9]*$/;
 export const IDO_CONTRACT_ADDRESS =
-  "0x0830618DF6085b6F1Dc6F467b5275451a04f4a9E";
+  "0x13f51fa22961E9b092B2bA9206c9EC368E4a8ABE";
 export const IDO_CONTRACT_ABI = [
   {
     inputs: [
@@ -185,6 +185,13 @@ export const IDO_CONTRACT_ABI = [
   {
     inputs: [],
     name: "saleIndex",
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    stateMutability: "view",
+    type: "function"
+  },
+  {
+    inputs: [{ internalType: "address", name: "", type: "address" }],
+    name: "scoreRewards",
     outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
     stateMutability: "view",
     type: "function"
@@ -918,7 +925,7 @@ export const CHAIN_ID = 59140;
 export const FLOOR_OF_ETH_AMOUNT_TO_PAY = 0.01;
 export const CEIL_OF_ETH_AMOUNT_TO_PAY = 10;
 export const PEKO_CONTRACT_ADDRESS =
-  "0x1fEfa8AA57B7BC54e77a06f98dfd693369C11cdD";
+  "0xe73A423a55528245FB1bD183Fa73Af75979cFAeE";
 export const OWNER_WALLET_ADDRESS =
   "0x055f9fb7424651a7f4541827c1b54733d00259e8";
 export const HARD_CAP_OF_PRIVATE_SALE_IN_ETH = 53;
