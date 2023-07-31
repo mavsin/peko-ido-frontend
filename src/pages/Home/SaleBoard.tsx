@@ -110,13 +110,18 @@ export default function SaleBoard({ saleIndex }: IProps) {
     if (address) {
       api.post('/proof', { address })
         .then(res => {
-          setProof(res.data.proof)
+          console.log('>>>>>>>>>> res.data.proof => ', res.data.proof)
+          if (res.data.proof.length > 0) {
+            setProof(res.data.proof)
+          } else {
+            toast.warn("You aren't whitelisted.")
+          }
         })
         .catch(error => {
           console.log('>>>>>>>>> error => ', error)
         })
     }
-  }, [proof, address])
+  }, [address])
 
   //  -----------------------------------------------------------------
 
