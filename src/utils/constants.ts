@@ -14,11 +14,12 @@ export const SOCIAL_LINKS: Array<ISocialLink> = [
 ];
 export const REGEX_NUMBER_VALID = /^[0-9]*\.?[0-9]*$/;
 export const IDO_CONTRACT_ADDRESS =
-  "0x438f2D399638931306d402511BD22a5233b929D2";
+  "0xe2E5F73300B964f2c4ef586f03866C0542905c61";
 export const IDO_CONTRACT_ABI = [
   {
     inputs: [
-      { internalType: "address", name: "_rewardAddress", type: "address" }
+      { internalType: "address", name: "_rewardAddress", type: "address" },
+      { internalType: "bytes32", name: "_rootHash", type: "bytes32" }
     ],
     stateMutability: "nonpayable",
     type: "constructor"
@@ -72,16 +73,7 @@ export const IDO_CONTRACT_ABI = [
   },
   { stateMutability: "payable", type: "fallback" },
   {
-    inputs: [
-      { internalType: "address[]", name: "addressesToAdd", type: "address[]" }
-    ],
-    name: "addToWhitelist",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function"
-  },
-  {
-    inputs: [],
+    inputs: [{ internalType: "bytes32[]", name: "proof", type: "bytes32[]" }],
     name: "buy",
     outputs: [],
     stateMutability: "payable",
@@ -185,9 +177,23 @@ export const IDO_CONTRACT_ABI = [
   },
   {
     inputs: [],
+    name: "rootHash",
+    outputs: [{ internalType: "bytes32", name: "", type: "bytes32" }],
+    stateMutability: "view",
+    type: "function"
+  },
+  {
+    inputs: [],
     name: "saleIndex",
     outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
     stateMutability: "view",
+    type: "function"
+  },
+  {
+    inputs: [{ internalType: "bytes32", name: "_rootHash", type: "bytes32" }],
+    name: "setRootHash",
+    outputs: [],
+    stateMutability: "nonpayable",
     type: "function"
   },
   {
@@ -912,7 +918,7 @@ export const CHAIN_ID = 59140;
 export const FLOOR_OF_ETH_AMOUNT_TO_PAY = 0.01;
 export const CEIL_OF_ETH_AMOUNT_TO_PAY = 10;
 export const PEKO_CONTRACT_ADDRESS =
-  "0x73ab0d67d74517e0bc9d406d06a744aaa097f96e";
+  "0x7dF961d2Ae7252cD9128f613187dd69D720A5849";
 export const OWNER_WALLET_ADDRESS =
   "0x055f9fb7424651a7f4541827c1b54733d00259e8";
 export const HARD_CAP_OF_PRIVATE_SALE_IN_ETH = 53;

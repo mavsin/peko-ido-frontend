@@ -1,10 +1,11 @@
-import { useState, ChangeEvent, useMemo } from 'react'
+import { useState, ChangeEvent, useMemo, useEffect } from 'react'
 import { Button } from '@material-tailwind/react'
 import { useAccount, useBalance, useContractWrite, useNetwork, usePrepareContractWrite, useWaitForTransaction } from 'wagmi'
 import { toast } from 'react-toastify'
 import { parseEther } from 'viem'
 import Input from "../../components/Input"
 import { CEIL_OF_ETH_AMOUNT_TO_PAY, CHAIN_ID, FIXED_DECIMAL, FLOOR_OF_ETH_AMOUNT_TO_PAY, IDO_CONTRACT_ABI, IDO_CONTRACT_ADDRESS, MSG_CONNECT_WALLET, MSG_SWITCH_NETWORK, REGEX_NUMBER_VALID } from '../../utils/constants'
+import api from '../../utils/api'
 
 //  ----------------------------------------------------------------------------------------
 
@@ -16,6 +17,7 @@ interface IProps {
 
 export default function SaleBoard({ saleIndex }: IProps) {
   const [amount, setAmount] = useState<string>('0')
+  const [proof, setProof] = useState<Array<string>>([])
 
   const { address, isConnected } = useAccount()
   const { chain } = useNetwork()
@@ -38,6 +40,7 @@ export default function SaleBoard({ saleIndex }: IProps) {
     address: IDO_CONTRACT_ADDRESS,
     abi: IDO_CONTRACT_ABI,
     functionName: 'buy',
+    args: [proof],
     value: parseEther(amount),
     onError: (error) => {
       console.log('>>>>>>>>>> error.stack of buy => ', error.stack)
@@ -103,6 +106,20 @@ export default function SaleBoard({ saleIndex }: IProps) {
 
   //  -----------------------------------------------------------------
 
+  useEffect(() => {
+    if (address) {
+      api.post('/proof', { address })
+        .then(res => {
+          setProof(res.data.proof)
+        })
+        .catch(error => {
+          console.log('>>>>>>>>> error => ', error)
+        })
+    }
+  }, [proof, address])
+
+  //  -----------------------------------------------------------------
+
   return (
     <div className="col-span-7 md:col-span-4 border-2 border-yellow-800 rounded-md">
       {/* title */}
@@ -128,14 +145,13 @@ export default function SaleBoard({ saleIndex }: IProps) {
                     >Max</Button>
                   )}
                 </>
-
               }
             />
             {saleIndex === 1 ? (
               <Button
                 color="amber"
                 className="text-base hidden md:block"
-                disabled={buyIsLoading || Number(amount) > ethBalanceOfWallet || Number(amount) > maxAmount || Number(amount) < FLOOR_OF_ETH_AMOUNT_TO_PAY}
+                disabled={buyIsLoading || Number(amount) > ethBalanceOfWallet || Number(amount) > maxAmount || Number(amount) < FLOOR_OF_ETH_AMOUNT_TO_PAY || proof.length === 0}
                 onClick={() => handleBuy()}
               >Buy</Button>
             ) : saleIndex === 2 ? (
