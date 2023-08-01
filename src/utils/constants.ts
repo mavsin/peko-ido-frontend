@@ -944,8 +944,8 @@ export const SALE_INFOS: Array<ISaleInfo> = [
     priceInEth: "- -"
   },
   {
-    startAt: "2023-08-03 00:00:00",
-    endAt: "2023-08-05 00:00:00",
+    startAt: "2023-08-03T09:00:00",
+    endAt: "2023-08-05T09:00:00",
     saleType: "Private",
     method: "Normal",
     hardCap: 53,
@@ -953,8 +953,8 @@ export const SALE_INFOS: Array<ISaleInfo> = [
     personalCap: [0.01, 10]
   },
   {
-    startAt: "2023-08-05 00:00:00",
-    endAt: "2023-08-07 00:00:00",
+    startAt: "2023-08-05T09:00:00",
+    endAt: "2023-08-08T09:00:00",
     saleType: "Public",
     method: "Overflow",
     hardCap: 65,

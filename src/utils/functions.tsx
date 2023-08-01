@@ -48,3 +48,16 @@ export const getVisibleDateTime = (datetime: Date): string => {
     }`;
   return `${_time} ${_date}`;
 };
+
+
+export const getUTCDateTime = (estDate: string): Date => {
+  // Create a new Date object with the provided EST date string
+  const date = new Date(estDate);
+
+  // Get the UTC time by adding the timezone offset (in minutes)
+  // Note: During daylight saving time, the offset will be -240 (UTC-4)
+  // and during standard time, the offset will be -300 (UTC-5).
+  const utcTime = new Date(date.getTime() + date.getTimezoneOffset() * 60000);
+
+  return utcTime;
+}

@@ -1,3 +1,4 @@
+import { getUTCDateTime, getVisibleDateTime } from '../../utils/functions';
 import { ISaleInfo } from '../../utils/interfaces';
 
 //  ----------------------------------------------------------------------------------------------------------
@@ -19,11 +20,11 @@ export default function SaleInfoBoard({ saleInfo }: IProps) {
       <div className="p-4 flex flex-col gap-4">
         <div className="flex flex-col gap-1">
           <span className="text-gray-500 text-sm">Start Sale</span>
-          <span className="text-gray-100 text-base font-bold">UTC {saleInfo.startAt}</span>
+          <span className="text-gray-100 text-base font-bold">UTC {getVisibleDateTime(getUTCDateTime(saleInfo.startAt))}</span>
         </div>
         <div className="flex flex-col gap-1">
           <span className="text-gray-500 text-sm">End of Sale</span>
-          <span className="text-gray-100 text-base font-bold">UTC {saleInfo.endAt}</span>
+          <span className="text-gray-100 text-base font-bold">UTC {getVisibleDateTime(getUTCDateTime(saleInfo.endAt))}</span>
         </div>
         <div className="flex flex-col gap-1">
           <span className="text-gray-500 text-sm">Sale Type</span>
