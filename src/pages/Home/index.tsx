@@ -185,11 +185,11 @@ export default function Home() {
                 </h2>
               </div>
             </div>
-            {address === walletAddressOfOwner && <ControllerForOwner />}
+            {address && address === walletAddressOfOwner && <ControllerForOwner />}
           </div>
 
           {/* Sale Info */}
-          <SaleInfoBoard saleInfo={saleInfo} />
+          <SaleInfoBoard saleInfo={saleInfo} saleIndex={saleIndex} />
         </div>
       </div>
     </Container>

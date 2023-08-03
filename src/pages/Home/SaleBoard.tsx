@@ -18,6 +18,7 @@ interface IProps {
 export default function SaleBoard({ saleIndex }: IProps) {
   const [amount, setAmount] = useState<string>('0')
   const [proof, setProof] = useState<Array<string>>([])
+  const [errorMessage, setErrorMessage] = useState<string>('')
 
   const { address, isConnected } = useAccount()
   const { chain } = useNetwork()
@@ -43,7 +44,8 @@ export default function SaleBoard({ saleIndex }: IProps) {
     args: [proof],
     value: parseEther(amount),
     onError: (error) => {
-      console.log('>>>>>>>>>> error.stack of buy => ', error.stack)
+      const errorObject = JSON.parse(JSON.stringify(error))
+      setErrorMessage(errorObject.cause.reason)
     }
   })
   const { write: buy, data: dataOfBuy } = useContractWrite(configOfBuy)
@@ -88,9 +90,7 @@ export default function SaleBoard({ saleIndex }: IProps) {
             if (buy) {
               buy()
             } else {
-              if (saleIndex === 1) {
-                toast.warn("You aren't whitelisted.")
-              }
+              toast.warn(errorMessage)
             }
           } else {
             toast.warn(`You must purchase ${FLOOR_OF_ETH_AMOUNT_TO_PAY} to ${CEIL_OF_ETH_AMOUNT_TO_PAY} PEKO.`)
@@ -174,7 +174,9 @@ export default function SaleBoard({ saleIndex }: IProps) {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <span className="text-gray-500 text-sm">Balance:</span>
-              <span className="text-gray-100 text-base uppercase font-bold">{address ? Number(ethBalanceData?.formatted).toFixed(FIXED_DECIMAL) : '- -'} ETH</span>
+              <span className="text-gray-100 text-base uppercase font-bold">
+                {address ? Number(ethBalanceData?.formatted).toFixed(FIXED_DECIMAL) : '- -'} ETH
+              </span>
             </div>
             <Button color="amber" className="text-base block md:hidden py-2">Buy</Button>
           </div>
